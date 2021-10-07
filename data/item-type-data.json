@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Besi",
+    "price": 7000
+  },
+  {
+    "name": "Plastik",
+    "price": 3000
+  },
+  {
+    "name": "Kertas",
+    "price": 2000
+  },
+  {
+    "name": "Botol",
+    "price": 4000
+  }
+]

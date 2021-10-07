@@ -1,0 +1,1386 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "Bangsam",
+    "contact": {
+      "email": "hello@bangsam.com"
+    }
+  },
+  "host": "",
+  "tags": [
+    {
+      "name": "Branch (Bank) Endpoints",
+      "description": "All endpoints related to branch"
+    },
+    {
+      "name": "User Endpoints",
+      "description": "All endpoints related to nasabah"
+    },
+    {
+      "name": "Address Endpoints",
+      "description": "All endpoints related to address"
+    },
+    {
+      "name": "Item types Endpoints",
+      "description": "All endpoints related to address"
+    },
+    {
+      "name": "Pick up endpoints",
+      "description": "All endpoints related to pick up"
+    },
+    {
+      "name": "Dashboard endpoints",
+      "description": "All endpoints related to dashboard"
+    },
+    {
+      "name": "Buku tabungan endpoints",
+      "description": "All endpoints related to dashboard"
+    }
+  ],
+  "paths": {
+    "/branches/register": {
+      "post": {
+        "tags": [
+          "Branch (Bank) Endpoints"
+        ],
+        "summary": "Create new branch / bank",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created branch object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateBranch"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "A Branch object with token attached",
+            "schema": {
+              "$ref": "#/definitions/BranchWithToken"
+            }
+          },
+          "400": {
+            "description": "Password and its confirmation must be the same"
+          }
+        }
+      }
+    },
+    "/branches/verify/{user_id}": {
+      "get": {
+        "tags": [
+          "Branch (Bank) Endpoints"
+        ],
+        "summary": "Verify current branch",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "user id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "request_id",
+            "in": "query",
+            "description": "Can be acquired when we register",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "description": "Verfication code received from sms",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "showing all users/nasabah"
+          }
+        }
+      }
+    },
+    "/branches/login": {
+      "post": {
+        "tags": [
+          "Branch (Bank) Endpoints"
+        ],
+        "summary": "Login branch into the system",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created branch object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "phone_number": {
+                  "type": "string",
+                  "example": 62833748325388
+                },
+                "password": {
+                  "type": "string",
+                  "example": "pass"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A User object with token attached",
+            "schema": {
+              "$ref": "#/definitions/BranchWithToken"
+            }
+          }
+        }
+      }
+    },
+    "/branches/current": {
+      "get": {
+        "tags": [
+          "Branch (Bank) Endpoints"
+        ],
+        "summary": "Get current bank details",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A User object with token attached",
+            "schema": {
+              "$ref": "#/definitions/Branch"
+            }
+          }
+        }
+      }
+    },
+    "/branches": {
+      "get": {
+        "tags": [
+          "Branch (Bank) Endpoints"
+        ],
+        "summary": "Get all bank available",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Search using partial string",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A User object with token attached",
+            "schema": {
+              "$ref": "#/definitions/Branch"
+            }
+          }
+        }
+      }
+    },
+    "/branches/upload": {
+      "put": {
+        "tags": [
+          "Branch (Bank) Endpoints"
+        ],
+        "summary": "Update current logged in bank image",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "required": true,
+            "description": "The file to upload."
+          }
+        ],
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bank details",
+            "schema": {
+              "$ref": "#/definitions/Branch"
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch_id}": {
+      "delete": {
+        "tags": [
+          "Branch (Bank) Endpoints"
+        ],
+        "summary": "Delete selected branch",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "branch_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A User object with token attached",
+            "schema": {
+              "$ref": "#/definitions/Branch"
+            }
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "tags": [
+          "User Endpoints"
+        ],
+        "summary": "Create new nasabah account",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "expected nasabah object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateUsers"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "A users object with token attached",
+            "schema": {
+              "$ref": "#/definitions/UserWithToken"
+            }
+          }
+        }
+      }
+    },
+    "/users/verify/{user_id}": {
+      "get": {
+        "tags": [
+          "User Endpoints"
+        ],
+        "summary": "Verify current user",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "user id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "request_id",
+            "in": "query",
+            "description": "Can be acquired when we register",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "description": "Verfication code received from sms",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "showing all users/nasabah"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "User Endpoints"
+        ],
+        "summary": "Login users into the system",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "expected login object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A User object with token attached"
+          }
+        }
+      }
+    },
+    "/users/show": {
+      "get": {
+        "tags": [
+          "User Endpoints"
+        ],
+        "summary": "Get all nasabah",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Search using partial string",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "showing all users/nasabah"
+          }
+        }
+      }
+    },
+    "/users/current": {
+      "get": {
+        "tags": [
+          "User Endpoints"
+        ],
+        "summary": "Get current logged in user",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A User object",
+            "schema": {
+              "$ref": "#/definitions/Branch"
+            }
+          }
+        }
+      }
+    },
+    "/users/update": {
+      "put": {
+        "tags": [
+          "User Endpoints"
+        ],
+        "summary": "Update logged in nasabah",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User object",
+            "schema": {
+              "$ref": "#/definitions/UserNotoken"
+            }
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/users/address/{address_id}": {
+      "put": {
+        "tags": [
+          "User Endpoints"
+        ],
+        "summary": "Update user address",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "address_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateUserAddress"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/address/provinces": {
+      "get": {
+        "tags": [
+          "Address Endpoints"
+        ],
+        "summary": "Get all provincess",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns an array contains list of province"
+          }
+        }
+      }
+    },
+    "/address/districts/{prov_id}": {
+      "get": {
+        "tags": [
+          "Address Endpoints"
+        ],
+        "summary": "Get all all districts",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "prov_id",
+            "in": "path",
+            "description": "Id of province",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns an array contains list of province"
+          }
+        }
+      }
+    },
+    "/address/regencies/{dist_id}": {
+      "get": {
+        "tags": [
+          "Address Endpoints"
+        ],
+        "summary": "Get all sub districts",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "dist_id",
+            "in": "path",
+            "description": "Id of district",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns an array contains list of province"
+          }
+        }
+      }
+    },
+    "/address/villages/{reg_id}": {
+      "get": {
+        "tags": [
+          "Address Endpoints"
+        ],
+        "summary": "Get all village",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "reg_id",
+            "in": "path",
+            "description": "Id of sub district",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns an array contains list of province"
+          }
+        }
+      }
+    },
+    "/address/{address_id}": {
+      "delete": {
+        "tags": [
+          "Address Endpoints"
+        ],
+        "summary": "Remove selected address",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "address_id",
+            "in": "path",
+            "description": "Id of selected address",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Removed address"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/pick-ups/requests/{branch_id}": {
+      "post": {
+        "tags": [
+          "Pick up endpoints"
+        ],
+        "summary": "Create a pick up request (user)",
+        "description": "Required to logged in as a user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "branch_id",
+            "in": "path",
+            "description": "Id of branch",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/CreatePickUpRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/pick-ups/requests/admin": {
+      "get": {
+        "tags": [
+          "Pick up endpoints"
+        ],
+        "summary": "Get all pick up requests",
+        "description": "Required to logged in",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/pick-ups/requests/user": {
+      "get": {
+        "tags": [
+          "Pick up endpoints"
+        ],
+        "summary": "Get all pick up requests",
+        "description": "Required to logged in",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/pick-ups/requests/{request_id}": {
+      "get": {
+        "tags": [
+          "Pick up endpoints"
+        ],
+        "summary": "Get single pick up request by {request_id",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "description": "Request id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Pick up endpoints"
+        ],
+        "summary": "Update: e.g validate item details",
+        "description": "Required logged in as a bank",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "description": "Request id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/ValidateItems"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/pick-ups/requests/{request_id}/approve": {
+      "put": {
+        "tags": [
+          "Pick up endpoints"
+        ],
+        "summary": "Approve {request_id} (bank)",
+        "description": "Required logged in a bank",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "description": "Request id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PickUpDisapprove"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/pick-ups/requests/{request_id}/disapprove": {
+      "put": {
+        "tags": [
+          "Pick up endpoints"
+        ],
+        "summary": "Disapprove {request_id} (bank)",
+        "description": "Required logged in a bank",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "description": "Request id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PickUpDisapprove"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/item-types": {
+      "get": {
+        "tags": [
+          "Item types Endpoints"
+        ],
+        "summary": "Get all item types",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type arrays"
+          }
+        }
+      }
+    },
+    "/item-types/{item_id}": {
+      "put": {
+        "tags": [
+          "Item types Endpoints"
+        ],
+        "summary": "Update selected item type",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "description": "Id of trash type",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/dashboard": {
+      "get": {
+        "tags": [
+          "Dashboard endpoints"
+        ],
+        "summary": "Get dashboard data",
+        "description": "Required to logged in",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/books/branches": {
+      "get": {
+        "tags": [
+          "Buku tabungan endpoints"
+        ],
+        "summary": "Get Buku tabungan array",
+        "description": "Required to logged in",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/books/branches/{branch_id}": {
+      "get": {
+        "tags": [
+          "Buku tabungan endpoints"
+        ],
+        "summary": "Get Buku tabungan array by branch_id",
+        "description": "Required to logged in",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "branch_id",
+            "in": "path",
+            "description": "Request id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    },
+    "/books/withdraw/{branch_id}": {
+      "post": {
+        "tags": [
+          "Buku tabungan endpoints"
+        ],
+        "summary": "Withdraw",
+        "description": "Required to logged in",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "branch_id",
+            "in": "path",
+            "description": "Id of branch",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cash": {
+                  "type": "number",
+                  "example": 3000
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item type object"
+          }
+        },
+        "security": [
+          {
+            "authorization": []
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "authorization": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "CreateBranch": {
+      "type": "object",
+      "properties": {
+        "branch_name": {
+          "type": "string",
+          "example": "Bank sampah kabil"
+        },
+        "phone_number": {
+          "type": "string",
+          "example": "083737344878"
+        },
+        "address": {
+          "type": "string",
+          "example": "Jalan kalibenda no 36B"
+        },
+        "password": {
+          "type": "string",
+          "example": "pass"
+        },
+        "password_confirmation": {
+          "type": "string",
+          "example": "pass"
+        }
+      },
+      "xml": {
+        "name": "Branch"
+      }
+    },
+    "Branch": {
+      "type": "object",
+      "properties": {
+        "branch_name": {
+          "type": "string",
+          "example": "Bank sampah kabil"
+        },
+        "phone_number": {
+          "type": "string",
+          "example": "083737344878"
+        },
+        "address": {
+          "type": "string",
+          "example": "Jalan kalibenda no 36B"
+        },
+        "balance": {
+          "type": "string",
+          "example": 0
+        }
+      }
+    },
+    "BranchWithToken": {
+      "type": "object",
+      "properties": {
+        "branch_name": {
+          "type": "string",
+          "example": "Bank sampah kabil"
+        },
+        "phone_number": {
+          "type": "string",
+          "example": "083737344878"
+        },
+        "token": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTRlNjgzOWUzZjJhNmY4NTk5YTZhZTciLCJpYXQiOjE1ODIxOTY3OTN9.M1g9J-OnZ0t83xiIvlaDFYX--JwA5IFWQlNzk5wzjIY"
+        },
+        "address": {
+          "type": "string",
+          "example": "Jalan kalibenda no 36B"
+        },
+        "balance": {
+          "type": "string",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "Branch"
+      }
+    },
+    "BranchNoToken": {
+      "type": "object",
+      "properties": {
+        "branch_name": {
+          "type": "string",
+          "example": "Bank sampah kabil"
+        },
+        "phone_number": {
+          "type": "string",
+          "example": "083737344878"
+        },
+        "address": {
+          "type": "string",
+          "example": "Jalan kalibenda no 36B"
+        },
+        "balance": {
+          "type": "string",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "Branch"
+      }
+    },
+    "CreateUsers": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "example": "Andrea"
+        },
+        "phone_number": {
+          "type": "string",
+          "example": "6287781826464"
+        },
+        "email": {
+          "type": "string",
+          "example": "andrea@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "pass"
+        },
+        "password_confirmation": {
+          "type": "string",
+          "example": "pass"
+        }
+      },
+      "xml": {
+        "name": "Users"
+      }
+    },
+    "UserLogin": {
+      "type": "object",
+      "properties": {
+        "phone_number": {
+          "type": "string",
+          "example": "6287781826664"
+        },
+        "password": {
+          "type": "string",
+          "example": "pass"
+        }
+      },
+      "xml": {
+        "name": "Users"
+      }
+    },
+    "UpdateUser": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "example": "Yuli"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Irawan"
+        },
+        "email": {
+          "type": "string",
+          "example": "yuli@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "pass"
+        }
+      },
+      "xml": {
+        "name": "Users"
+      }
+    },
+    "UpdateUserAddress": {
+      "type": "object",
+      "properties": {
+        "province": {
+          "type": "string",
+          "example": "Batam"
+        },
+        "district": {
+          "type": "string",
+          "example": "Nongsa"
+        },
+        "regency": {
+          "type": "string",
+          "example": "air"
+        },
+        "village": {
+          "type": "string",
+          "example": "kabil"
+        },
+        "address_details": {
+          "type": "string",
+          "example": "Komplek PTB Blok XX no 33"
+        }
+      },
+      "xml": {
+        "name": "Users"
+      }
+    },
+    "UserNotoken": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "example": "Andrea"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Hirata"
+        },
+        "full_name": {
+          "type": "string",
+          "example": "Hirata"
+        },
+        "email": {
+          "type": "string",
+          "example": "083737344878"
+        }
+      }
+    },
+    "UserWithToken": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "example": "Andrea"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Hirata"
+        },
+        "full_name": {
+          "type": "string",
+          "example": "Hirata"
+        },
+        "email": {
+          "type": "string",
+          "example": "083737344878"
+        },
+        "token": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTRlNjgzOWUzZjJhNmY4NTk5YTZhZTciLCJpYXQiOjE1ODIxOTY3OTN9.M1g9J-OnZ0t83xiIvlaDFYX--JwA5IFWQlNzk5wzjIY"
+        }
+      },
+      "xml": {
+        "name": "Users"
+      }
+    },
+    "CreatePickUpRequest": {
+      "type": "object",
+      "properties": {
+        "item_details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ItemTypeObject"
+          }
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "address_name": {
+              "type": "string",
+              "example": "Alamat Kantor"
+            },
+            "province": {
+              "type": "string",
+              "example": "Batam"
+            },
+            "district": {
+              "type": "string",
+              "example": "Kabil"
+            },
+            "regency": {
+              "type": "string",
+              "example": "nongsa"
+            },
+            "village": {
+              "type": "string",
+              "example": "Konoha"
+            },
+            "address_detail": {
+              "type": "string",
+              "example": "Komplek wakwaw no 66"
+            }
+          }
+        }
+      },
+      "xml": {
+        "name": "PickUp"
+      }
+    },
+    "ValidateItems": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number"
+        },
+        "item_details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ItemTypeObject"
+          }
+        }
+      },
+      "xml": {
+        "name": "PickUp"
+      }
+    },
+    "ItemTypeObject": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Besi"
+        },
+        "weight": {
+          "type": "string",
+          "example": 2
+        }
+      },
+      "xml": {
+        "name": "PickUp"
+      }
+    },
+    "PickUpApprove": {
+      "type": "object",
+      "properties": {
+        "estimated_time": {
+          "type": "number",
+          "example": 15
+        }
+      },
+      "xml": {
+        "name": "PickUp"
+      }
+    },
+    "PickUpDisapprove": {
+      "type": "object",
+      "properties": {
+        "estimated_time": {
+          "type": "number",
+          "example": 30
+        }
+      },
+      "xml": {
+        "name": "PickUp"
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
